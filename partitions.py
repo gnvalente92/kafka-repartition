@@ -29,4 +29,4 @@ def compute_replica_buckets(number_of_racks, number_of_buckets):
   for k in range(number_of_buckets):
       globals()['bucket_' + str(k)] = [k + x * number_of_buckets for x in range(number_of_racks)]
 
-create_partitions_file(number_of_racks=4, number_of_machines=12, topic_name='test_topic', number_of_partitions=16)
+
