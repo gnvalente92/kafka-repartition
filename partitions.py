@@ -18,18 +18,14 @@ def create_partitions_file (number_of_racks, number_of_machines, topic_name, num
     pop = globals()['bucket_' + str( i % number_of_buckets )].pop(0)
     globals()['bucket_' + str( i % number_of_buckets )] = globals()['bucket_' + str( i % number_of_buckets )] + [pop]
     replica_list = globals()['bucket_' + str( i % number_of_buckets )]
-    if ( i == number_of_partitions - 1 ):
-        f.write(BLOCK.replace('<ITERATOR>', str(i)).replace('<TOPIC_NAME>', topic_name).replace('<REPLICA_LIST>', str(replica_list)) + "\n")
-    else:
-        f.write(BLOCK.replace('<ITERATOR>', str(i)).replace('<TOPIC_NAME>', topic_name).replace('<REPLICA_LIST>', str(replica_list)) + ',' + "\n")
+    sufix = '' if(i == number_of_partitions - 1 ) else ','
+    f.write(BLOCK.replace('<ITERATOR>', str(i)).replace('<TOPIC_NAME>', topic_name).replace('<REPLICA_LIST>', str(replica_list)) + sufix + "\n")
   f.write(FOOTER)
   f.close()
   print("Partition reassignment file created.")
 
 def compute_replica_buckets(number_of_racks, number_of_buckets):
   for k in range(number_of_buckets):
-      globals()['bucket_' + str(k)] = [] 
-      for j in range(number_of_racks):
-        globals()['bucket_' + str(k)] += [k + j * number_of_buckets]
+      globals()['bucket_' + str(k)] = [k + x * number_of_buckets for x in range(number_of_racks)]
 
 create_partitions_file(number_of_racks=4, number_of_machines=12, topic_name='test_topic', number_of_partitions=16)
