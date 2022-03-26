@@ -1,13 +1,8 @@
 import os
 import random
 
-# ==================================================
-# AUX VARIABLES
-# ==================================================
-HEADER = '{"version":1, "partitions":['
-BLOCK = '{"topic":"<TOPIC_NAME>", "partition":<ITERATOR>, "replicas":<REPLICA_LIST>}'
-FOOTER = ']}'
-# ==================================================
+from auxiliary import HEADER, BLOCK, FOOTER
+
 
 def create_partitions_file (number_of_racks, number_of_machines, topic_name, number_of_partitions):
   print('Partition reassignment json file creator script.')
